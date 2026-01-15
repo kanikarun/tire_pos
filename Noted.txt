@@ -1,0 +1,5 @@
+product btn ,category btn in product cannot add 
+manage stock not yet do dynamic
+stock  not yet do dynamic
+size change to can be null 
+POS do dynamic and logic too

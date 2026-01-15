@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tire POS - Stock Management</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+<link rel="icon" type="image/png" href="/static/icon/car.png">
+
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">TP</div> Tire POS</div>
+      <nav class="nav">
+        <a  href="/index.html"><span class="icon">🏠</span> Dashboard</a>
+        <a href="/pos.html"><span class="icon">🧾</span> POS</a>
+        <a href="/product.html"><span class="icon">🛞</span> Products</a>
+        <a class="active" href="/stock.html"><span class="icon">📦</span> Stock</a>
+        <a href="/reports.html"><span class="icon">📊</span> Reports</a>
+      </nav>
+    </aside>
+    <header class="header">
+      <div class="h1">Stock Management</div>
+      <div class="row">
+        <button id="btn-refresh" class="btn">🔄 Refresh</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="card">
+        <div class="card-header">
+          <div class="h2">Inventory</div>
+          <div class="search">
+            <input id="search" placeholder="Search products..." />
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Code</th>
+                <th>Size</th>
+                <th class="num">Price</th>
+                <th class="num">Stock</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="stock-rows">
+              <tr>
+                <td colspan="7" style="text-align: center; color: var(--muted); padding: 24px;">
+                  Loading stock...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Update Stock Modal -->
+  <div id="modal-stock" class="modal">
+    <div class="dialog card">
+      <div class="card-header">
+        <div class="h2">Update Stock</div>
+      </div>
+      <div class="card-body">
+        <div class="form">
+          <div class="field">
+            <label>Product</label>
+            <input id="stock-product-name" readonly style="background: #0a1220;" />
+          </div>
+
+          <div class="field">
+            <label>Current Stock</label>
+            <input id="stock-current" readonly style="background: #0a1220;" />
+          </div>
+
+          <div class="grid cols-2">
+            <div class="field">
+              <label>Adjustment Type</label>
+              <select id="stock-type">
+                <option value="set">Set Quantity</option>
+                <option value="add">Add Stock</option>
+                <option value="remove">Remove Stock</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Quantity</label>
+              <input id="stock-quantity" type="number" min="0" placeholder="Enter quantity" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer row">
+        <button class="btn" data-close>Cancel</button>
+        <button id="save-stock" class="btn primary">Update Stock</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script type="module" src="/static/js/api.js"></script>
+  <script type="module" src="/static/js/stock.js"></script>
+</body>
+</html>

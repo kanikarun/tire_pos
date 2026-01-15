@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tire POS - Products</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+<link rel="icon" type="image/png" href="/static/icon/car.png">
+
+
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">TP</div> Tire POS</div>
+      <nav class="nav">
+        <a  href="/index.html"><span class="icon">🏠</span> Dashboard</a>
+        <a href="/pos.html"><span class="icon">🧾</span> POS</a>
+        <a class="active" href="/product.html"><span class="icon">🛞</span> Products</a>
+        <a href="/stock.html"><span class="icon">📦</span> Stock</a>
+        <a href="/reports.html"><span class="icon">📊</span> Reports</a>
+      </nav>
+    </aside>
+    <header class="header">
+      <div class="h1">Products</div>
+      <div class="row">
+        <button id="btn-open-category" class="btn">+ Category</button>
+        <button id="btn-open-product" class="btn primary">+ Product</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="card">
+        <div class="card-header">
+          <div class="h2">All Products</div>
+          <div class="search"><input id="search" placeholder="Search products" /></div>
+        </div>
+        <div class="card-body p-0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Size</th>
+                <th class="num">Price</th>
+                <th>Category</th>
+                <th class="num">Stock</th>
+              </tr>
+            </thead>
+            <tbody id="product-rows"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Category Modal -->
+  <div id="modal-category" class="modal">
+    <div class="dialog card">
+      <div class="card-header"><div class="h2">Add Category</div></div>
+      <div class="card-body">
+        <div class="form">
+          <div class="field">
+            <label>Category Name</label>
+            <input id="cat-name" placeholder="e.g. All-Season, Winter, Brands" />
+          </div>
+        </div>
+      </div>
+      <div class="card-footer row">
+        <button class="btn" data-close>Cancel</button>
+        <button id="save-category" class="btn primary">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Modal -->
+  <div id="modal-product" class="modal">
+    <div class="dialog card">
+      <div class="card-header"><div class="h2">Add Product</div></div>
+      <div class="card-body">
+        <div class="form">
+          <div class="grid cols-2">
+            <div class="field">
+              <label>Product Name *</label>
+              <input id="p-name" placeholder="e.g. Michelin Primacy" />
+            </div>
+            <div class="field">
+              <label>Product Code *</label>
+              <input id="p-code" placeholder="e.g. MICH-235-45-18" />
+            </div>
+          </div>
+          
+          <div class="grid cols-3">
+            <div class="field">
+              <label>Width (mm)</label>
+              <input id="p-width" type="number" min="0" placeholder="235 (optional)" />
+            </div>
+            <div class="field">
+              <label>Aspect Ratio</label>
+              <input id="p-ratio" type="number" min="0" placeholder="45 (optional)" />
+            </div>
+            <div class="field">
+              <label>Rim (inches)</label>
+              <input id="p-rim" type="number" min="0" placeholder="18 (optional)" />
+            </div>
+          </div>
+          
+          <div class="grid cols-2">
+            <div class="field">
+              <label>Price ($) *</label>
+              <input id="p-price" type="number" min="0" step="0.01" placeholder="150.00" />
+            </div>
+            <div class="field">
+              <label>Category *</label>
+              <select id="p-category"></select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer row">
+        <button class="btn" data-close>Cancel</button>
+        <button id="save-product" class="btn primary">Save Product</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script type="module" src="/static/js/api.js"></script>
+  <script type="module" src="/static/js/products.js"></script>
+</body>
+</html>

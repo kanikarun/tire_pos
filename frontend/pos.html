@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tire POS - Point of Sale</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+<link rel="icon" type="image/png" href="/static/icon/car.png">
+
+
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">TP</div> Tire POS</div>
+      <nav class="nav">
+        <a href="/index.html"><span class="icon">🏠</span> Dashboard</a>
+        <a class="active" href="/pos.html"><span class="icon">🧾</span> POS</a>
+        <a href="/product.html"><span class="icon">🛞</span> Products</a>
+        <a href="/stock.html"><span class="icon">📦</span> Stock</a>
+        <a href="/reports.html"><span class="icon">📊</span> Reports</a>
+      </nav>
+    </aside>
+    <header class="header">
+      <div class="h1">Point of Sale</div>
+      <div class="row">
+        <button id="btn-clear-cart" class="btn danger">Clear Cart</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="grid cols-2" style="grid-template-columns: 2fr 1fr; gap: 24px;">
+        <!-- Products Grid -->
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <div class="h2">Select Products</div>
+              <div class="search">
+                <input id="search-product" placeholder="Search products..." />
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="product-grid" id="products-grid">
+                <div style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 48px;">
+                  Loading products...
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cart -->
+        <div>
+          <div class="card">
+            <div class="card-header">
+              <div class="h2">Cart</div>
+              <div class="badge info" id="cart-count">0 items</div>
+            </div>
+            <div class="card-body" style="min-height: 300px;">
+              <div id="cart-items">
+                <div style="text-align: center; color: var(--muted); padding: 48px 24px;">
+                  Cart is empty
+                </div>
+              </div>
+            </div>
+            <div class="card-footer" style="display: block;">
+              <div class="row" style="justify-content: space-between; margin-bottom: 16px;">
+                <div class="h2">Total:</div>
+                <div class="h1" style="color: var(--primary);" id="cart-total">$0.00</div>
+              </div>
+              <button id="btn-checkout" class="btn primary w-100" disabled>
+                Checkout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script type="module" src="/static/js/api.js"></script>
+  <script type="module" src="/static/js/pos.js"></script>
+</body>
+</html>

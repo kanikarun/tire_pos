@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tire POS - Reports</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="icon" type="image/png" href="/static/icon/car.png">
+  <style>
+    @media print {
+      .sidebar, .header, .no-print, .btn { display: none !important; }
+      .app { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+      .content { padding: 20px; }
+      .card { border: 1px solid #000; box-shadow: none; page-break-inside: avoid; }
+      body { background: white; color: black; }
+      .table th, .table td { border: 1px solid #ddd; }
+      .badge { border: 1px solid #000; }
+      .print-header { display: block !important; text-align: center; margin-bottom: 20px; }
+      .print-header h1 { font-size: 24px; margin: 0; color: #000; }
+      .print-header p { margin: 5px 0; color: #666; }
+    }
+
+    .print-header { display: none; }
+
+    .report-filters {
+      background: var(--card);
+      padding: 20px;
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .summary-cards { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">TP</div> Tire POS</div>
+      <nav class="nav">
+        <a href="/index.html"><span class="icon">🏠</span> Dashboard</a>
+        <a href="/pos.html"><span class="icon">🧾</span> POS</a>
+        <a href="/product.html"><span class="icon">🛞</span> Products</a>
+        <a href="/stock.html"><span class="icon">📦</span> Stock</a>
+        <a class="active" href="/reports.html"><span class="icon">📊</span> Reports</a>
+      </nav>
+    </aside>
+
+    <header class="header">
+      <div class="h1">Sales Reports</div>
+      <div class="row no-print">
+        <button id="btn-print" class="btn primary">🖨️ Print Report</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <!-- Print Header (only shows when printing) -->
+      <div class="print-header">
+        <h1>Tire POS - Sales Report</h1>
+        <p id="print-date"></p>
+        <p id="print-period"></p>
+      </div>
+
+      <!-- Filters -->
+      <div class="report-filters no-print">
+        <div class="grid cols-4">
+          <div class="field">
+            <label>Report Type</label>
+            <select id="report-type">
+              <option value="daily">Daily Report</option>
+              <option value="weekly">Weekly Report</option>
+              <option value="monthly">Monthly Report</option>
+              <option value="custom">Custom Range</option>
+              <option value="all">All Time</option>
+            </select>
+          </div>
+
+          <div class="field" id="date-from-field">
+            <label>From Date</label>
+            <input type="date" id="date-from" />
+          </div>
+
+          <div class="field" id="date-to-field">
+            <label>To Date</label>
+            <input type="date" id="date-to" />
+          </div>
+
+          <div class="field" style="display: flex; align-items: flex-end;">
+            <button id="btn-generate" class="btn primary w-100">Generate Report</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary Cards -->
+      <div class="summary-cards">
+        <div class="card">
+          <div class="card-body">
+            <div class="muted" style="font-size: 13px;">Total Sales</div>
+            <div class="h1" id="total-sales">0</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <div class="muted" style="font-size: 13px;">Total Revenue</div>
+            <div class="h1" style="color: var(--primary);" id="total-revenue">$0.00</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <div class="muted" style="font-size: 13px;">Items Sold</div>
+            <div class="h1" id="items-sold">0</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <div class="muted" style="font-size: 13px;">Avg Sale</div>
+            <div class="h1" id="avg-sale">$0.00</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sales Table -->
+      <div class="card">
+        <div class="card-header">
+          <div class="h2" id="report-title">Sales Report</div>
+          <div class="badge info" id="report-count">0 transactions</div>
+        </div>
+        <div class="card-body p-0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Date & Time</th>
+                <th>Product</th>
+                <th>Code</th>
+                <th>Size</th>
+                <th class="num">Qty</th>
+                <th class="num">Unit Price</th>
+                <th class="num">Total</th>
+              </tr>
+            </thead>
+            <tbody id="sales-rows">
+              <tr>
+                <td colspan="7" style="text-align: center; color: var(--muted); padding: 24px;">
+                  Select filters and click "Generate Report"
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Product Sales Summary -->
+      <div class="card" style="margin-top: 24px;">
+        <div class="card-header">
+          <div class="h2">Sales by Product</div>
+        </div>
+        <div class="card-body p-0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Code</th>
+                <th class="num">Units Sold</th>
+                <th class="num">Revenue</th>
+                <th class="num">% of Total</th>
+              </tr>
+            </thead>
+            <tbody id="product-summary-rows">
+              <tr>
+                <td colspan="5" style="text-align: center; color: var(--muted); padding: 24px;">
+                  No data yet
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script type="module" src="/static/js/reports.js"></script>
+</body>
+</html>
